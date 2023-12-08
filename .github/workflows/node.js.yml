@@ -24,7 +24,7 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: setup node
         uses: actions/setup-node@master
@@ -50,32 +50,32 @@ jobs:
 
       steps:
         - name: checkout repo
-          uses: actions/checkout@v2
+          uses: actions/checkout@v4
 
         - name: Set up QEMU
-          uses: docker/setup-qemu-action@v1
+          uses: docker/setup-qemu-action@v3
       
         - name: Set up Docker Buildx
-          uses: docker/setup-buildx-action@v1
+          uses: docker/setup-buildx-action@v3
 
         - name: Login to DockerHub
-          uses: docker/login-action@v1
+          uses: docker/login-action@v3
           with:
             username: ${{ secrets.DOCKERHUB_USERNAME }}
             password: ${{ secrets.DOCKERHUB_TOKEN }}
       
         - name: Build and push
-          uses: docker/build-push-action@v2
+          uses: docker/build-push-action@v5
           with:
             context: ./
             file: ./Dockerfile
             push: true
-            tags: ${{ secrets.DOCKERHUB_USERNAME }}/nodejs-demo:latest
+            tags: ${{ secrets.DOCKERHUB_USERNAME }}/pocnode-app:latest
           
         - name: Run the image in a container
           uses: addnab/docker-run-action@v3
           with:
-            image: ${{ secrets.DOCKERHUB_USERNAME }}/nodejs-demo:latest
+            image: ${{ secrets.DOCKERHUB_USERNAME }}/pocnode-app:latest
             run: |
               echo "runing the docker image"
               echo "Testing the nodejs  app endpoints"
